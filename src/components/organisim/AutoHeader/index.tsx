@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform} from 'react-native';
-import BackIcon from '../../atoms/BackIcon';
-
+import {BackIcon, Button, Gap} from '../../atoms';
 type Props = {
   title: string;
   onBack?: () => void;

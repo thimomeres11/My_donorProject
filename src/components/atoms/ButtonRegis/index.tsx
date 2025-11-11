@@ -21,7 +21,7 @@ const Button = () => {
         end={{x: 1, y: 0}}
         locations={[0, 0.56]}
         style={styles.gradient}>
-        <Text style={styles.text}>Login</Text>
+        <Text style={styles.text}>Registar</Text>
       </LinearGradient>
     </TouchableOpacity>
   );
