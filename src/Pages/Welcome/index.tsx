@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import Background2 from '../../assets/Background2.svg'; // ganti path jika perlu
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-export default function ShareLocationScreen({ navigation }: any) {
+export default function ShareLocationScreen({navigation}: any) {
   const onPressLanjut = () => {
     navigation.navigate('WelcomeStartet');
   };
@@ -31,7 +31,7 @@ export default function ShareLocationScreen({ navigation }: any) {
       {/* Bottom: plain white area (tidak lagi dibungkus di card) */}
       <View style={styles.bottom}>
         <View style={styles.textWrap}>
-          <Text style={styles.title}>Shar Location</Text>
+          <Text style={styles.title}>Share Location</Text>
           <Text style={styles.subtitle}>
             We use your location to known the places{'\n'}where the blood
           </Text>

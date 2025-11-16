@@ -7,7 +7,7 @@ const Button = () => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('Welcome');
+    navigation.navigate('Home');
   };
 
   return (
