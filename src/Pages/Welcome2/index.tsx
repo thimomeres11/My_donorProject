@@ -1,12 +1,19 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import Background1 from '../../assets/BackgroundW.svg';
 import LogoDonor from '../../assets/LOGO DONOR.svg';
 import RedCross from '../../assets/PmiLogo.svg';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const SplashScreen = () => {
+const SplashScreen = ({navigation}: any) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Welcome');
+    }, 5000); // 5 detik
+
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -25,7 +32,7 @@ const SplashScreen = () => {
 
       {/* Logo tengah (Tetes darah) */}
       <View style={styles.centerLogoContainer}>
-        <LogoDonor width={width * 0.40} height={width * 0.40} />
+        <LogoDonor width={width * 0.4} height={width * 0.4} />
       </View>
 
       {/* Teks bawah */}
@@ -46,11 +53,10 @@ const styles = StyleSheet.create({
   },
   topLogoContainer: {
     position: 'absolute',
-    top: height * 0.010, // posisi lebih tinggi agar sesuai figma
+    top: height * 0.01, // posisi lebih tinggi agar sesuai figma
     alignItems: 'center',
   },
   centerLogoContainer: {
-
     position: 'absolute',
     bottom: height * 0.14, // posisi pas di atas teks My-donor
     alignItems: 'center',
