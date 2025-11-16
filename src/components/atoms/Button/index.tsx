@@ -8,7 +8,6 @@ const Button = () => {
 
   const handlePress = () => {
     navigation.navigate('Home');
-
   };
 
   return (
