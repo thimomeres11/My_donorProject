@@ -8,6 +8,8 @@ import {
   Dimensions,
   Platform,
   Text,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import BottomNav from '../../components/organisim/BottomNav';
@@ -18,27 +20,24 @@ import {Gap} from '../../components/atoms';
 
 const {width: SW, height: SH} = Dimensions.get('window');
 
-/**
- * Tweak values below if still belum pas:
- * - BOTTOM_NAV_HEIGHT: tinggi bottom nav (sesuaikan jika berbeda)
- * - SAFE_BOTTOM_GAP: jarak aman
- * - EXTRA_FILL: nilai utama — naikkan untuk membuat card lebih panjang ke bawah
- */
 const BOTTOM_NAV_HEIGHT = Platform.OS === 'ios' ? 90 : 84;
 const SAFE_BOTTOM_GAP = 12;
-
-// === NAIKKAN INI JIKA MASIH BELUM SAMPAI ===
-const EXTRA_FILL = 220; // <--- saya naikkan cukup besar supaya kartu turun lebih jauh
-// ===========================================================================
-
+const EXTRA_FILL = 220;
 const BOTTOM_SPACER = BOTTOM_NAV_HEIGHT + SAFE_BOTTOM_GAP;
 
-const Home: React.FC = () => {
+const Home: React.FC<any> = ({navigation}) => {
+  const goToCekStokDarah = () => {
+    // debug helper (opsional)
+    // console.log('Navigate to CekStokDarah');
+    Alert.alert('Navigasi', 'Menuju Cek Stok Darah', [
+      {text: 'OK', onPress: () => navigation.navigate('CekStokDarah')},
+    ]);
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.root}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* WHITE CARD */}
           <View style={styles.whiteCard}>
             <View style={styles.whiteCardInner}>
               <Gap height={46} />
@@ -52,17 +51,20 @@ const Home: React.FC = () => {
               <Gap height={24} />
               <BannerCarousel />
 
-              <Gap height={39} />
-              <MenuGrid />
+              <Gap height={20} />
+
+              {/* === NOTE: CTA besar dihapus. Navigasi dipindahkan ke MenuGrid === */}
+
+              <Gap height={18} />
+              {/* Pass callback ke MenuGrid */}
+              <MenuGrid onPressCekStok={goToCekStokDarah} />
               <Gap height={12} />
             </View>
           </View>
 
-          {/* spacer besar supaya bottom nav tidak menutupi */}
           <View style={{height: BOTTOM_SPACER}} />
         </ScrollView>
 
-        {/* Bottom Navigation (posisi tetap di bawah) */}
         <BottomNav />
       </View>
     </SafeAreaView>
@@ -71,19 +73,16 @@ const Home: React.FC = () => {
 
 export default Home;
 
+/* styles (sama seperti sebelum; hapus style ctaButton jika tidak dipakai) */
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: '#f2f2f2'},
   root: {flex: 1},
-
-  // biarkan ScrollView mengembang agar child dengan minHeight bisa bekerja
   scrollContainer: {
     flexGrow: 1,
     paddingTop: 0,
     paddingBottom: 0,
     paddingHorizontal: 0,
   },
-
-  // agar kartu turun: minHeight = layar - bottomNav + EXTRA_FILL
   whiteCard: {
     minHeight: SH - (BOTTOM_NAV_HEIGHT + SAFE_BOTTOM_GAP) + EXTRA_FILL,
     marginHorizontal: 0,
@@ -92,24 +91,18 @@ const styles = StyleSheet.create({
     marginTop: 0,
     backgroundColor: '#fff',
     marginVertical: 8,
-
-    // lebih banyak paddingBottom sehingga isi tidak menempel
     paddingBottom: 36 + SAFE_BOTTOM_GAP,
-
-    // shadow / elevation
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 6},
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 4,
   },
-
   whiteCardInner: {
     backgroundColor: 'transparent',
     paddingHorizontal: 18,
     paddingTop: 18,
   },
-
   desc: {
     marginTop: 8,
     fontFamily: 'Poppins-Regular',
