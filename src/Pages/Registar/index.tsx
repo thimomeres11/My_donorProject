@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  View,
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
