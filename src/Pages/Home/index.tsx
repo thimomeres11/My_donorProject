@@ -27,11 +27,8 @@ const BOTTOM_SPACER = BOTTOM_NAV_HEIGHT + SAFE_BOTTOM_GAP;
 
 const Home: React.FC<any> = ({navigation}) => {
   const goToCekStokDarah = () => {
-    // debug helper (opsional)
-    // console.log('Navigate to CekStokDarah');
-    Alert.alert('Navigasi', 'Menuju Cek Stok Darah', [
-      {text: 'OK', onPress: () => navigation.navigate('CekStokDarah')},
-    ]);
+    console.log('goToCekStokDarah called');
+    navigation.navigate('CekStokDarah');
   };
 
   return (
