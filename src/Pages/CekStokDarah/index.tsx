@@ -1,5 +1,5 @@
 // src/pages/CekStokDarah/index.tsx
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,6 +10,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // install react-native-vector-icons jika belum
 import BottomNav from '../../components/organisim/BottomNav';
@@ -63,9 +64,21 @@ const sampleData: Hospital[] = [
 ];
 
 const CekStokDarah: React.FC<any> = ({navigation}) => {
+  // states for detail modal
+  const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(
+    null,
+  );
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
+
   const renderItem = ({item}: {item: Hospital}) => {
     return (
-      <View style={styles.cardWrap}>
+      <TouchableOpacity
+        style={styles.cardWrap}
+        activeOpacity={0.9}
+        onPress={() => {
+          setSelectedHospital(item);
+          setDetailModalVisible(true);
+        }}>
         <View style={styles.card}>
           {/* Left: Thumbnail */}
           <Image source={item.image} style={styles.thumb} resizeMode="cover" />
@@ -105,7 +118,7 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
             </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -118,8 +131,7 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
               <View style={styles.headerBar}>
                 <TouchableOpacity
                   style={styles.backBtn}
-                  onPress={() => navigation.goBack()} // <-- navigation.goBack() ditambahkan
-                >
+                  onPress={() => navigation.goBack()}>
                   <Ionicons
                     name="chevron-back-outline"
                     size={22}
@@ -128,11 +140,9 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Bandung, Jawa Barat</Text>
                 <View style={{width: 40}} />{' '}
-                {/* placeholder agar center title */}
               </View>
 
               <View style={styles.searchBar}>
-                {/* bisa diganti dengan input nanti */}
                 <Text style={styles.searchText}>Sort | Filter</Text>
               </View>
 
@@ -149,6 +159,54 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
           ItemSeparatorComponent={() => <View style={{height: 6}} />}
           ListFooterComponent={<View style={{height: BOTTOM_SPACER}} />}
         />
+
+        {/* Detail Modal */}
+        {selectedHospital && (
+          <Modal
+            visible={detailModalVisible}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setDetailModalVisible(false)}>
+            <View style={styles.detailModalOverlay}>
+              <View style={styles.detailModalCard}>
+                <View style={styles.detailModalHeader}>
+                  <Text style={styles.detailTitle}>
+                    {selectedHospital.name}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setDetailModalVisible(false)}>
+                    <Ionicons name="close" size={20} color="#222" />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.detailBody}>
+                  <Text style={styles.detailLabel}>
+                    Golongan Darah :{' '}
+                    <Text style={styles.detailValue}>
+                      {selectedHospital.bloodType}
+                    </Text>
+                  </Text>
+                  <Text style={[styles.detailLabel, {marginTop: 8}]}>
+                    Stok Darah :{' '}
+                    <Text style={styles.detailValue}>
+                      {selectedHospital.stock} /Kantong
+                    </Text>
+                  </Text>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.requestBtn}
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    // placeholder: tutup modal. Ganti dengan logic request jika ingin.
+                    setDetailModalVisible(false);
+                  }}>
+                  <Text style={styles.requestBtnText}>Request Darah</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        )}
 
         <BottomNav />
       </View>
@@ -317,5 +375,61 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#222',
     fontFamily: 'Poppins-SemiBold',
+  },
+
+  // modal styles
+  detailModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  detailModalCard: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 6},
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  detailModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  detailTitle: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 16,
+    color: '#222',
+  },
+  detailBody: {
+    marginBottom: 14,
+  },
+  detailLabel: {
+    fontFamily: 'Poppins-Regular',
+    color: '#444',
+    fontSize: 14,
+  },
+  detailValue: {
+    fontFamily: 'Poppins-SemiBold',
+    color: '#E53935',
+  },
+  requestBtn: {
+    backgroundColor: '#E53935',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  requestBtnText: {
+    color: '#fff',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15,
   },
 });
