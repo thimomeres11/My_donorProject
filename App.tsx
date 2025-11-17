@@ -1,5 +1,4 @@
 // App.tsx
-import 'react-native-gesture-handler'; // penting jika pakai gesture handler (taruh paling atas)
 import React from 'react';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,6 +11,7 @@ import Home from './src/Pages/Home';
 import Welcome from './src/Pages/Welcome';
 import Welcome2 from './src/Pages/Welcome2';
 import WelcomeStartet from './src/Pages/WelcomeStartet';
+import CekStokDarah from './src/Pages/CekStokDarah';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -47,6 +47,11 @@ const App: React.FC = () => {
         <Stack.Screen
           name="WelcomeStartet"
           component={WelcomeStartet}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CekStokDarah"
+          component={CekStokDarah}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
