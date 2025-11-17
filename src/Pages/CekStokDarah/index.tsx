@@ -62,7 +62,7 @@ const sampleData: Hospital[] = [
   },
 ];
 
-const CekStokDarah: React.FC = () => {
+const CekStokDarah: React.FC<any> = ({navigation}) => {
   const renderItem = ({item}: {item: Hospital}) => {
     return (
       <View style={styles.cardWrap}>
@@ -94,7 +94,7 @@ const CekStokDarah: React.FC = () => {
             </View>
 
             {/* Spacer */}
-            <View style={{flex: 1}} />
+            <View style={styles.flexSpacer} />
 
             {/* Bottom: blood info */}
             <View style={styles.bloodRow}>
@@ -116,7 +116,10 @@ const CekStokDarah: React.FC = () => {
           ListHeaderComponent={
             <>
               <View style={styles.headerBar}>
-                <TouchableOpacity style={styles.backBtn}>
+                <TouchableOpacity
+                  style={styles.backBtn}
+                  onPress={() => navigation.goBack()} // <-- navigation.goBack() ditambahkan
+                >
                   <Ionicons
                     name="chevron-back-outline"
                     size={22}
@@ -135,15 +138,7 @@ const CekStokDarah: React.FC = () => {
 
               <Gap height={12} />
 
-              {/* white card container untuk list */}
-              <View style={styles.whiteCard}>
-                <View style={styles.whiteCardInner}>
-                  {/* optional: judul atau deskripsi */}
-                  <Text style={styles.sectionTitle}>Cek Stok Darah</Text>
-                  <Gap height={12} />
-                </View>
-              </View>
-
+              {/* NOTE: container "Cek Stok Darah" DIHAPUS sesuai permintaan */}
               <Gap height={8} />
             </>
           }
@@ -203,7 +198,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
 
-  // White card area (atas)
+  // White card area (atas) -- TIDAK DIHAPUS DARI STYLE karena permintaan tidak mengubah style lain
   whiteCard: {
     minHeight: 120,
     marginHorizontal: 12,
@@ -264,6 +259,10 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     height: 68,
     justifyContent: 'space-between',
+  },
+
+  flexSpacer: {
+    flex: 1,
   },
 
   rowTop: {
