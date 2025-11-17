@@ -9,35 +9,46 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from './src/Pages/Login';
 import Registar from './src/Pages/Registar';
 import Home from './src/Pages/Home';
-import CekStokDarah from './src/Pages/CekStokDarah';
-
-/**
- * Root param list supaya navigate punya typing yang jelas (opsional tapi berguna)
- */
-export type RootStackParamList = {
-  Login: undefined;
-  Registar: undefined;
-  Home: undefined;
-  CekStokDarah: undefined;
-};
+import Welcome from './src/Pages/Welcome';
+import Welcome2 from './src/Pages/Welcome2';
+import WelcomeStartet from './src/Pages/WelcomeStartet';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      {/* status bar */}
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Registar" component={Registar} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="CekStokDarah" component={CekStokDarah} />
+      <Stack.Navigator initialRouteName="Welcome2">
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Registar"
+          component={Registar}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Welcome2"
+          component={Welcome2}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="WelcomeStartet"
+          component={WelcomeStartet}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

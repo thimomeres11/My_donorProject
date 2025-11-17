@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  View,
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
@@ -12,17 +11,17 @@ import AutoHeader from '../../components/organisim/AutoHeader';
 import LogoTitle from '../../components/molecules/LogoTitles';
 import {
   Gap,
-  Button,
-  CreateAccount,
   ButtonRegis,
+  CreateAccount,
   AlreadyHaveAcounts,
 } from '../../components/atoms';
 import TextInput from '../../components/molecules/TextInput';
 
 const Registar: React.FC<any> = ({navigation}) => {
   const handleBack = () => {
-    if (navigation && typeof navigation.goBack === 'function')
+    if (navigation && typeof navigation.goBack === 'function') {
       navigation.goBack();
+    }
   };
 
   // state form
@@ -44,16 +43,19 @@ const Registar: React.FC<any> = ({navigation}) => {
       Alert.alert('Error', 'Semua field harus diisi.');
       return;
     }
+
     // basic email format (simple)
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email)) {
       Alert.alert('Error', 'Format email tidak valid.');
       return;
     }
+
     if (password.length < 6) {
       Alert.alert('Error', 'Password minimal 6 karakter.');
       return;
     }
+
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Password dan konfirmasi tidak sama.');
       return;
@@ -71,7 +73,7 @@ const Registar: React.FC<any> = ({navigation}) => {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{flex: 1}}>
+        style={styles.keyboard}>
         <ScrollView
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled">
@@ -113,8 +115,10 @@ const Registar: React.FC<any> = ({navigation}) => {
             onChangeText={setConfirmPassword}
           />
           <Gap height={10} />
-          <ButtonRegis />{' '}
-          {/* jika Button perlu onPress, nanti kita ganti untuk panggil validateAndSubmit */}
+
+          {/* PENTING: pasang onPress supaya fungsi dipakai */}
+          <ButtonRegis title="Register" onPress={validateAndSubmit} />
+
           <Gap height={7} />
           <CreateAccount />
           <AlreadyHaveAcounts />
@@ -128,6 +132,7 @@ export default Registar;
 
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: '#FFFFFF'},
+  keyboard: {flex: 1},
   container: {
     paddingHorizontal: 32,
     paddingBottom: 40,
