@@ -12,11 +12,11 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons'; // install react-native-vector-icons jika belum
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomNav from '../../components/organisim/BottomNav';
 import {Gap} from '../../components/atoms';
 
-Dimensions.get('window');
+const {width: SW, height: SH} = Dimensions.get('window');
 
 const BOTTOM_NAV_HEIGHT = Platform.OS === 'ios' ? 90 : 84;
 const SAFE_BOTTOM_GAP = 12;
@@ -35,7 +35,7 @@ const sampleData: Hospital[] = [
   {
     id: '1',
     name: 'Rumah Sakit Santosa',
-    image: require('../../assets/RS.png'), // ganti path image sesuai project Anda
+    image: require('../../assets/RS.png'),
     bloodType: 'A +',
     stock: 4,
     isFavorite: true,
@@ -64,7 +64,6 @@ const sampleData: Hospital[] = [
 ];
 
 const CekStokDarah: React.FC<any> = ({navigation}) => {
-  // states for detail modal
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(
     null,
   );
@@ -80,17 +79,14 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
           setDetailModalVisible(true);
         }}>
         <View style={styles.card}>
-          {/* Left: Thumbnail */}
           <Image source={item.image} style={styles.thumb} resizeMode="cover" />
 
-          {/* Middle: Texts */}
           <View style={styles.cardContent}>
             <View style={styles.rowTop}>
               <Text style={styles.title} numberOfLines={2}>
                 {item.name}
               </Text>
 
-              {/* Heart icon */}
               <TouchableOpacity style={styles.heartBtn} activeOpacity={0.7}>
                 <Ionicons
                   name={item.isFavorite ? 'heart' : 'heart-outline'}
@@ -100,16 +96,13 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
               </TouchableOpacity>
             </View>
 
-            {/* small icon row (misal lokasi) */}
             <View style={styles.iconRow}>
               <Ionicons name="location-outline" size={16} color="#666" />
               <Text style={styles.smallText}>Bandung, Jawa Barat</Text>
             </View>
 
-            {/* Spacer */}
             <View style={styles.flexSpacer} />
 
-            {/* Bottom: blood info */}
             <View style={styles.bloodRow}>
               <Text style={styles.bloodLabel}>Golongan Darah : </Text>
               <Text style={styles.bloodType}>{item.bloodType}</Text>
@@ -139,7 +132,7 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
                   />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Bandung, Jawa Barat</Text>
-                <View style={{width: 40}} />{' '}
+                <View style={{width: 40}} />
               </View>
 
               <View style={styles.searchBar}>
@@ -160,7 +153,6 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
           ListFooterComponent={<View style={{height: BOTTOM_SPACER}} />}
         />
 
-        {/* Detail Modal */}
         {selectedHospital && (
           <Modal
             visible={detailModalVisible}
@@ -198,7 +190,6 @@ const CekStokDarah: React.FC<any> = ({navigation}) => {
                   style={styles.requestBtn}
                   activeOpacity={0.8}
                   onPress={() => {
-                    // placeholder: tutup modal. Ganti dengan logic request jika ingin.
                     setDetailModalVisible(false);
                   }}>
                   <Text style={styles.requestBtnText}>Request Darah</Text>
@@ -256,7 +247,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
 
-  // White card area (atas) -- TIDAK DIHAPUS DARI STYLE karena permintaan tidak mengubah style lain
   whiteCard: {
     minHeight: 120,
     marginHorizontal: 12,
@@ -282,19 +272,16 @@ const styles = StyleSheet.create({
     color: '#222',
   },
 
-  // list container
   listContainer: {
     paddingHorizontal: 12,
     paddingTop: 8,
     paddingBottom: 0,
   },
 
-  // each card
   cardWrap: {
     backgroundColor: '#fff',
     borderRadius: 10,
     overflow: 'hidden',
-    // shadow for iOS / elevation for Android
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 6},
     shadowOpacity: 0.04,
@@ -377,7 +364,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
 
-  // modal styles
   detailModalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.35)',

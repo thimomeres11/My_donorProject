@@ -8,8 +8,6 @@ import {
   Dimensions,
   Platform,
   Text,
-  TouchableOpacity,
-  Alert,
 } from 'react-native';
 
 import BottomNav from '../../components/organisim/BottomNav';
