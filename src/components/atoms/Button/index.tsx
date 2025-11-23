@@ -1,27 +1,25 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
 
-const Button = () => {
-  const navigation = useNavigation();
+type Props = {
+  title?: string;
+  onPress?: () => void;
+};
 
-  const handlePress = () => {
-    navigation.navigate('Home');
-  };
-
+const Button: React.FC<Props> = ({title = 'Button', onPress}) => {
   return (
     <TouchableOpacity
       activeOpacity={0.85}
       style={styles.wrapper}
-      onPress={handlePress}>
+      onPress={onPress}>
       <LinearGradient
         colors={['#FF4141', '#FF6D6D']}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         locations={[0, 0.56]}
         style={styles.gradient}>
-        <Text style={styles.text}>Login</Text>
+        <Text style={styles.text}>{title}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -44,7 +42,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 6,
     elevation: 6,
-    backgroundColor: 'transparent',
     alignSelf: 'center',
   } as ViewStyle,
 

@@ -1,3 +1,4 @@
+// src/Pages/Registar/index.tsx
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -17,22 +18,20 @@ import {
 } from '../../components/atoms';
 import TextInput from '../../components/molecules/TextInput';
 
-const Registar: React.FC<any> = ({navigation}) => {
-  const handleBack = () => {
-    if (navigation && typeof navigation.goBack === 'function') {
-      navigation.goBack();
-    }
-  };
+// Firebase exports dari config
+import {auth, db} from '../../config/Firebase';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {ref, set} from 'firebase/database';
 
-  // state form
+const Registar: React.FC<any> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [dob, setDob] = useState(''); // bisa ganti ke datepicker nanti
+  const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const validateAndSubmit = () => {
-    // simple validation
+  const validateAndSubmit = async () => {
     if (
       !email.trim() ||
       !phone.trim() ||
@@ -44,9 +43,8 @@ const Registar: React.FC<any> = ({navigation}) => {
       return;
     }
 
-    // basic email format (simple)
     const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email.trim())) {
       Alert.alert('Error', 'Format email tidak valid.');
       return;
     }
@@ -61,16 +59,53 @@ const Registar: React.FC<any> = ({navigation}) => {
       return;
     }
 
-    // TODO: panggil API register di sini
-    Alert.alert('Sukses', 'Akun berhasil dibuat (dummy).');
-    // contoh: navigasi ke Login atau Home
-    navigation?.navigate?.('Login');
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password,
+      );
+      const user = userCredential.user;
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        phone,
+        dob,
+        createdAt: new Date().toISOString(),
+      };
+
+      // write to RTDB (non-blocking error handling)
+      try {
+        await set(ref(db, `users/${user.uid}`), userData);
+        console.log('Saved user to RTDB', user.uid);
+      } catch (dbErr) {
+        console.warn('DB write failed', dbErr);
+        Alert.alert(
+          'Peringatan',
+          'Akun dibuat tetapi gagal menyimpan data ke database.',
+        );
+      }
+
+      Alert.alert('Success', 'Akun berhasil dibuat!');
+      setLoading(false);
+      navigation.replace('Login', {email: email.trim()});
+    } catch (err: any) {
+      console.warn('Register error', err);
+      setLoading(false);
+      let msg = err?.message || 'Gagal mendaftar';
+      if (err?.code === 'auth/email-already-in-use')
+        msg = 'Email sudah terdaftar';
+      else if (err?.code === 'auth/invalid-email') msg = 'Email tidak valid';
+      else if (err?.code === 'auth/weak-password')
+        msg = 'Password terlalu lemah';
+      Alert.alert('Register Failed', msg);
+    }
   };
 
   return (
     <SafeAreaView style={styles.safe}>
-      <AutoHeader title="Registar" onBack={handleBack} />
-
+      <AutoHeader title="Registar" onBack={() => navigation.goBack()} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboard}>
@@ -79,6 +114,7 @@ const Registar: React.FC<any> = ({navigation}) => {
           keyboardShouldPersistTaps="handled">
           <LogoTitle />
           <Gap height={8} />
+
           <TextInput
             label="Email"
             placeholder="Enter Your Email"
@@ -114,10 +150,13 @@ const Registar: React.FC<any> = ({navigation}) => {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
-          <Gap height={10} />
 
-          {/* PENTING: pasang onPress supaya fungsi dipakai */}
-          <ButtonRegis title="Register" onPress={validateAndSubmit} />
+          <Gap height={12} />
+          <ButtonRegis
+            title={loading ? 'Loading...' : 'Register'}
+            onPress={validateAndSubmit}
+            disabled={loading}
+          />
 
           <Gap height={7} />
           <CreateAccount />
@@ -133,8 +172,5 @@ export default Registar;
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: '#FFFFFF'},
   keyboard: {flex: 1},
-  container: {
-    paddingHorizontal: 32,
-    paddingBottom: 40,
-  },
+  container: {paddingHorizontal: 32, paddingBottom: 40},
 });

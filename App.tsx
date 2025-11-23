@@ -12,6 +12,7 @@ import Welcome from './src/Pages/Welcome';
 import Welcome2 from './src/Pages/Welcome2';
 import WelcomeStartet from './src/Pages/WelcomeStartet';
 import CekStokDarah from './src/Pages/CekStokDarah';
+import './src/config/Firebase';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
