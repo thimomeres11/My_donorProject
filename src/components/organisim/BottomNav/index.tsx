@@ -1,27 +1,39 @@
+// src/components/organisim/BottomNav/index.tsx
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text, Platform} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-// Import SVGs
+// Import SVGs (pastikan path benar)
 import CekstokLogo from '../../../assets/CekstokLogo.svg';
 import HomeLogo from '../../../assets/HomeLogo.svg';
 import ContactPmi from '../../../assets/ContactPmi.svg';
 
 const BottomNav: React.FC = () => {
+  const navigation = useNavigation<any>();
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.item} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.item}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('CekStokDarah0')}>
         <CekstokLogo width={52} height={52} />
         <Text style={styles.label}>Chek stok Darah</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.item, styles.centerItem]}
-        activeOpacity={0.7}>
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('Home')}>
         <HomeLogo width={52} height={52} />
         <Text style={[styles.label, styles.centerLabel]}>Home</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.item}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('ContactPMI')} // ganti nama route jika berbeda
+      >
         <ContactPmi width={48} height={48} />
         <Text style={styles.label}>Contact PMI</Text>
       </TouchableOpacity>
@@ -45,17 +57,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22,
 
-    // === 💥 STRONG BOX SHADOW ===
-    // iOS shadow (lebih “jatuh” dan blur)
+    // shadow
     shadowColor: '#1b0000ff',
-    shadowOffset: {width: 0, height: -104}, // arah bayangan ke atas
-    shadowOpacity: 0.25, // lebih kuat
-    shadowRadius: 20, // radius besar = blur lembut
+    shadowOffset: {width: 0, height: -6},
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 12,
 
-    // Android shadow
-    elevation: 50, // makin tinggi makin terlihat bayangannya
-
-    // Tambahan efek “mengambang” biar mirip box shadow CSS
     borderTopWidth: 0.5,
     borderColor: 'rgba(0,0,0,0.05)',
   },
@@ -65,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centerItem: {
-    marginTop: -4, // tetap sedikit naik
+    marginTop: -4,
   },
   label: {
     fontFamily: 'Poppins-Regular',

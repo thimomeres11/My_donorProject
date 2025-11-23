@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+// src/components/molecules/TextInput/index.tsx
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
-  TextInput,
+  TextInput as RNTextInput,
   TouchableOpacity,
   StyleSheet,
   TextInputProps,
 } from 'react-native';
-import HideEye from '../../../assets/HideEye.svg'; // dari molecules/TextInput -> ../../../assets
+import HideEye from '../../../assets/HideEye.svg'; // sesuaikan path jika beda
 import Gap from '../../atoms/Gap';
 
 type Props = TextInputProps & {
@@ -27,6 +28,53 @@ const MoleculeTextInput: React.FC<Props> = ({
 
   const showPasswordHint = label?.toLowerCase() === 'password'; // hanya muncul jika label "Password"
 
+  // Ambil onChangeText asli dari parent (jika ada)
+  const onChangeTextProp = (rest as any).onChangeText as
+    | ((text: string) => void)
+    | undefined;
+
+  // Buat salinan props tanpa onChangeText agar tidak tersebar dua kali
+  const otherRest: TextInputProps = {...rest};
+  if ((otherRest as any).onChangeText) {
+    delete (otherRest as any).onChangeText;
+  }
+
+  // Debounce timer (tipenya benar)
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Delay (ms) — kamu bisa ubah sesuai kebutuhan
+  const DEBOUNCE_DELAY = 300; // 300ms cukup nyaman, naikkan kalau mau lebih lama
+
+  const handleDebouncedChange = (text: string) => {
+    // jalankan onChangeText parent secara realtime agar UI tetap update
+    // (jika kamu mau menunda update parent, hapus baris ini dan panggil hanya setelah debounce)
+    if (typeof onChangeTextProp === 'function') {
+      onChangeTextProp(text);
+    }
+
+    // Jika tujuannya hanya untuk logging yang jarang, debounce lognya:
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      // Debug/logging (hanya untuk dev)
+      // gunakan JSON.stringify jika object besar
+      console.log(`Input change [${label ?? 'field'}]:`, text);
+      debounceTimer.current = null;
+    }, DEBOUNCE_DELAY);
+  };
+
+  useEffect(() => {
+    return () => {
+      // Cleanup timer saat komponen unmount
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+        debounceTimer.current = null;
+      }
+    };
+  }, []);
+
   return (
     <View style={styles.wrapper}>
       {/* Label */}
@@ -35,12 +83,13 @@ const MoleculeTextInput: React.FC<Props> = ({
 
       {/* Input */}
       <View style={styles.inputWrapper}>
-        <TextInput
+        <RNTextInput
           style={[styles.input, style]}
           placeholder={placeholder}
           placeholderTextColor="#BDBDBD"
           secureTextEntry={secure && !visible}
-          {...rest}
+          onChangeText={handleDebouncedChange} // handle perubahan + debounce log
+          {...otherRest}
         />
 
         {secure ? (

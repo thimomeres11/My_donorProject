@@ -1,48 +1,34 @@
+// src/components/molecules/MenuGrid/index.tsx
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const {width: SW} = Dimensions.get('window');
+type Props = {
+  onPressCekStok?: () => void;
+};
 
-// ukuran kotak sesuai permintaan
-const CARD_W = 150;
-const CARD_H = 90;
-const H_GAP = 20; // jarak horizontal antar kotak (kamu bisa adjust)
-
-const MENU_ITEMS = [
-  {id: 1, title: 'Cek stok Darah'},
-  {id: 2, title: 'Donor Schedule'},
-  {id: 3, title: 'Request'},
-  {id: 4, title: 'Lokasi Donor darah'},
-];
-
-const MenuGrid: React.FC = () => {
+const MenuGrid: React.FC<Props> = ({onPressCekStok}) => {
   return (
-    <View style={styles.container}>
-      {MENU_ITEMS.map((item, index) => (
-        <TouchableOpacity
-          key={item.id}
-          activeOpacity={0.8}
-          style={[
-            styles.cardWrapper,
-            // beri marginTop 30 untuk baris kedua
-            index >= 2 && {marginTop: 30},
-          ]}>
-          <LinearGradient
-            colors={['#FF4141', '#FF6D6D']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            style={styles.card}>
-            <Text style={styles.title}>{item.title}</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      ))}
+    <View style={styles.grid}>
+      {/* Tombol Cek stok Darah (pindahkan navigasi ke sini melalui prop) */}
+      <TouchableOpacity
+        style={styles.card}
+        activeOpacity={0.8}
+        onPress={onPressCekStok}>
+        <Text style={styles.cardText}>Cek stok Darah</Text>
+      </TouchableOpacity>
+
+      {/* Item lain tetap seperti semula */}
+      <TouchableOpacity style={styles.card} activeOpacity={0.8}>
+        <Text style={styles.cardText}>Donor Schedule</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.card} activeOpacity={0.8}>
+        <Text style={styles.cardText}>Request</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.card} activeOpacity={0.8}>
+        <Text style={styles.cardText}>Lokasi Donor darah</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -50,39 +36,28 @@ const MenuGrid: React.FC = () => {
 export default MenuGrid;
 
 const styles = StyleSheet.create({
-  container: {
-    // two-column grid: use row wrap and space-between
+  grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    // gunakan padding yang sama seperti whiteCard (18) supaya align
-    paddingHorizontal: 18,
-    marginTop: 18,
-  },
-  cardWrapper: {
-    width: CARD_W,
-    height: CARD_H,
-    borderRadius: 16,
-    overflow: 'hidden',
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 6},
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 4,
-    backgroundColor: '#fff', // ini memungkinkan efek pinggiran putih bila diinginkan
   },
   card: {
-    flex: 1,
-    borderRadius: 16,
+    width: '46%',
+    aspectRatio: 1,
+    backgroundColor: '#FF6B6B',
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 8,
+    marginBottom: 18,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 6},
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 3,
   },
-  title: {
+  cardText: {
     color: '#fff',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 14,
+    fontFamily: 'Poppins-SemiBold',
     textAlign: 'center',
   },
 });
