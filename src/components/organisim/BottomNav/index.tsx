@@ -16,7 +16,7 @@ const BottomNav: React.FC = () => {
       <TouchableOpacity
         style={styles.item}
         activeOpacity={0.7}
-        onPress={() => navigation.navigate('CekStokDarah')}>
+        onPress={() => navigation.navigate('CekStokDarah0')}>
         <CekstokLogo width={52} height={52} />
         <Text style={styles.label}>Chek stok Darah</Text>
       </TouchableOpacity>
