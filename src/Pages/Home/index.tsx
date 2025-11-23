@@ -26,7 +26,7 @@ const BOTTOM_SPACER = BOTTOM_NAV_HEIGHT + SAFE_BOTTOM_GAP;
 const Home: React.FC<any> = ({navigation}) => {
   const goToCekStokDarah = () => {
     console.log('goToCekStokDarah called');
-    navigation.navigate('CekStokDarah');
+    navigation.navigate('CekStokDarah0');
   };
 
   return (

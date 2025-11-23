@@ -11,6 +11,7 @@ import Home from './src/Pages/Home';
 import Welcome from './src/Pages/Welcome';
 import Welcome2 from './src/Pages/Welcome2';
 import WelcomeStartet from './src/Pages/WelcomeStartet';
+import CekStokDarah0 from './src/Pages/CekStokDarah0';
 import CekStokDarah from './src/Pages/CekStokDarah';
 import './src/config/Firebase';
 
@@ -48,6 +49,11 @@ const App: React.FC = () => {
         <Stack.Screen
           name="WelcomeStartet"
           component={WelcomeStartet}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CekStokDarah0"
+          component={CekStokDarah0}
           options={{headerShown: false}}
         />
         <Stack.Screen

@@ -1,0 +1,140 @@
+Buat sebuah React Native screen TypeScript bernama RequestStokDarah yang mereplikasi desain prototype berikut:
+file:///mnt/data/Chek stok darah.png (gunakan image ini untuk header/logo dan ilustrasi di bawah).
+Target: aplikasi berbasis React Native (TypeScript) memakai react-navigation (stack), react-native-vector-icons (Ionicons), dan style inline/StyleSheet. Kode harus bersih, modular, dan mudah diintegrasikan ke proyek existing.
+
+Spesifikasi detail:
+
+File & export
+
+File utama: src/pages/RequestStokDarah/index.tsx
+
+Eksport: export default RequestStokDarah;
+
+Gunakan React.FC<any> untuk komponen.
+
+Semua tipe yang diperlukan (state, props) harus ditulis dengan TypeScript.
+
+Imports
+
+SafeAreaView, View, StyleSheet, Text, TouchableOpacity, TextInput, Modal, FlatList, Image, Platform, Dimensions dari react-native.
+
+Ionicons dari react-native-vector-icons/Ionicons.
+
+BottomNav dari ../../components/organisim/BottomNav.
+
+Gap dari ../../components/atoms.
+
+Gunakan file:///mnt/data/Chek stok darah.png untuk Image source={{ uri: 'file:///mnt/data/Chek stok darah.png' }} di header (logo kecil) dan di ilustrasi bawah.
+
+Layout & visual
+
+Background screen: sangat terang (#f9f6f6 atau #fff dengan area putih pada form).
+
+Header bar: tinggi ~56, tombol back kiri (ikon chevron-back-outline warna #E53935), judul tengah: "Request Stok Darah" warna #E53935, dan logo kecil di kanan (pakai image path di atas) align ke kanan.
+
+Form area berisi: dropdown pemilih golongan darah (placeholder "Pilih Golongan Darah"), input jumlah (placeholder "....../ Kantong"), dan selector lokasi (bar seperti tombol dengan ikon location di kiri dan lokasi default "Bandung, Jawa Barat"). Semua kotak memiliki border tipis (#e6e6e6), radius 10, tinggi 48, background putih.
+
+Tombol CTA besar merah #E53935 dengan shadow, teks putih: "Chek stok darah".
+
+Bawah form: row dengan teks help di kiri dan ilustrasi image di kanan (gunakan file yang sama sebagai ilustrasi).
+
+Footer: sertakan BottomNav component (seperti di proyek Anda).
+
+Behaviour & interaksi
+
+Ketika tekan dropdown golongan darah → munculkan Modal slide-up yang berisi FlatList pilihan: ['A +','A -','B +','B -','AB +','AB -','O +','O -']. Memilih item menutup modal dan set nilai.
+
+Quantity (TextInput) hanya menerima angka (keyboardType="numeric"). Biarkan user masukkan angka atau kosong.
+
+Tekan lokasi → munculkan Modal slide-up untuk pilih lokasi (contoh data: ['Bandung, Jawa Barat', 'Jakarta, DKI Jakarta', 'Surabaya, Jawa Timur']).
+
+CTA "Chek stok darah":
+
+Disabled (atau beri style disabled) kecuali bloodType terisi dan quantity > 0.
+
+Saat ditekan, navigasi ke screen CekStokDarah0 menggunakan navigation.navigate('CekStokDarah0', { bloodType, quantity: Number(quantity), location }).
+
+Sebelum navigasi, tampilkan console.log berisi payload yang akan dikirim.
+
+Semua tombol harus punya activeOpacity yang wajar; modal bisa ditutup dengan gesture/onRequestClose.
+
+Accessibility
+
+Beri accessibilityLabel pada tombol utama, dropdown, dan tombol back.
+
+Text input harus memiliki placeholder yang deskriptif.
+
+Styling
+
+Gunakan font keluarga Poppins-Regular/Poppins-SemiBold (pakai fallback bila tidak tersedia).
+
+Gunakan shadow untuk tombol CTA dan white card (elevation untuk Android).
+
+Gunakan warna:
+
+primary: #E53935
+
+muted text: #666 / #444
+
+border: #e6e6e6
+
+Padding dan margin mengikuti visual prototype (jarak antar elemen konsisten: 12–18px).
+
+Buat responsive berdasarkan Dimensions.get('window') bila perlu; minimal pastikan layout baik pada ukuran tinggi layar kecil.
+
+Kode & struktur komponen
+
+Buat helper state dengan useState untuk bloodType, quantity, location, pickBloodVisible, pickLocationVisible.
+
+Modal list item harus high-performance FlatList dengan keyExtractor.
+
+Buat fungsi kecil: onPressSearch() untuk validasi & navigate.
+
+Sertakan komentar singkat di bagian logika penting.
+
+Navigasi & integrasi
+
+Pastikan screen siap dipakai oleh react-navigation stack — beri contoh cara register di AppNavigator:
+
+<Stack.Screen name="CekStokDarah0" component={CekStokDarah} />
+<Stack.Screen name="RequestStokDarah" component={RequestStokDarah} />
+
+
+Jika project menggunakan nested navigators, sertakan catatan cara memanggil route dari navigator parent:
+navigation.navigate('ParentStack', { screen: 'CekStokDarah0' });
+
+Testing & QA checklist (dilakukan otomatis/manual)
+
+ Dropdown golongan darah buka modal dan memilih item mengisi field.
+
+ Quantity hanya menerima angka.
+
+ Lokasi default terisi; perubahan lewat modal berhasil.
+
+ Tombol CTA disable jika validasi gagal; enable jika valid.
+
+ Saat CTA ditekan, console.log payload dan navigation.navigate dipanggil dengan param yang benar.
+
+ Modal dapat ditutup menggunakan tombol close / sistem back.
+
+ Visual cocok dengan prototype: margin, warna, shadow, radius.
+
+ Aksesibilitas: tombol dan input punya accessibilityLabel.
+
+Output yang saya harapkan dari AI agent
+
+Berikan full file src/pages/RequestStokDarah/index.tsx (TypeScript) siap copy-paste.
+
+Jika ada gambar lokal, gunakan path: file:///mnt/data/Chek stok darah.png.
+
+Berikan juga snippet yang memperlihatkan bagaimana mendaftarkan screen ini ke navigator (contoh Stack.Screen).
+
+Sertakan penjelasan singkat (3–5 baris) tentang bagaimana menyesuaikan route name CekStokDarah0 jika project Anda memakai nama berbeda.
+
+Catatan tambahan
+
+Jangan gunakan libraries UI besar (mis. NativeBase) kecuali diminta.
+
+Jangan memuat asset remote; gunakan path lokal yang disebutkan di atas.
+
+Tulis kode rapi, gunakan StyleSheet.create, hindari magic numbers yang tidak perlu.
