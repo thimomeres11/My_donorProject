@@ -4,10 +4,10 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import {showMessage} from 'react-native-flash-message'; // <-- import showMessage
 import AutoHeader from '../../components/organisim/AutoHeader';
 import LogoTitle from '../../components/molecules/LogoTitles';
 import {
@@ -39,23 +39,39 @@ const Registar: React.FC<any> = ({navigation}) => {
       !password ||
       !confirmPassword
     ) {
-      Alert.alert('Error', 'Semua field harus diisi.');
+      showMessage({
+        message: 'Error',
+        description: 'Semua field harus diisi.',
+        type: 'warning',
+      });
       return;
     }
 
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email.trim())) {
-      Alert.alert('Error', 'Format email tidak valid.');
+      showMessage({
+        message: 'Error',
+        description: 'Format email tidak valid.',
+        type: 'warning',
+      });
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password minimal 6 karakter.');
+      showMessage({
+        message: 'Error',
+        description: 'Password minimal 6 karakter.',
+        type: 'warning',
+      });
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Password dan konfirmasi tidak sama.');
+      showMessage({
+        message: 'Error',
+        description: 'Password dan konfirmasi tidak sama.',
+        type: 'warning',
+      });
       return;
     }
 
@@ -81,13 +97,18 @@ const Registar: React.FC<any> = ({navigation}) => {
         console.log('Saved user to RTDB', user.uid);
       } catch (dbErr) {
         console.warn('DB write failed', dbErr);
-        Alert.alert(
-          'Peringatan',
-          'Akun dibuat tetapi gagal menyimpan data ke database.',
-        );
+        showMessage({
+          message: 'Peringatan',
+          description: 'Akun dibuat tetapi gagal menyimpan data ke database.',
+          type: 'warning',
+        });
       }
 
-      Alert.alert('Success', 'Akun berhasil dibuat!');
+      showMessage({
+        message: 'Success',
+        description: 'Akun berhasil dibuat!',
+        type: 'success',
+      });
       setLoading(false);
       navigation.replace('Login', {email: email.trim()});
     } catch (err: any) {
@@ -99,7 +120,12 @@ const Registar: React.FC<any> = ({navigation}) => {
       else if (err?.code === 'auth/invalid-email') msg = 'Email tidak valid';
       else if (err?.code === 'auth/weak-password')
         msg = 'Password terlalu lemah';
-      Alert.alert('Register Failed', msg);
+
+      showMessage({
+        message: 'Register Failed',
+        description: msg,
+        type: 'danger',
+      });
     }
   };
 

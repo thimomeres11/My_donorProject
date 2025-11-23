@@ -1,29 +1,22 @@
 // src/Pages/Welcome3/index.tsx
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  Dimensions,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {View, Text, StyleSheet, Platform, Dimensions} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import GetButtonStart from '../../components/organisim/GetstartedButton';
 import GetStartedBg from '../../assets/Geststarted.svg';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 export default function Welcome3() {
   const navigation: any = useNavigation();
 
   const handleGetStarted = () => {
-    navigation.navigate('Login'); 
+    navigation.navigate('Login');
   };
 
   return (
     <View style={styles.container}>
-
       {/* TOP AREA : SVG */}
       <View style={styles.top}>
         <GetStartedBg
@@ -46,7 +39,6 @@ export default function Welcome3() {
       <View style={styles.bottom}>
         <GetButtonStart onPress={handleGetStarted} />
       </View>
-
     </View>
   );
 }
@@ -66,7 +58,7 @@ const styles = StyleSheet.create({
   // TEXT PALING BAWAH GAMBAR
   bottomTextBox: {
     position: 'absolute',
-    bottom: 35,       // JARAK dari bawah gambar → sesuaikan sesuka kamu
+    bottom: 35, // JARAK dari bawah gambar → sesuaikan sesuka kamu
     left: 0,
     right: 0,
     alignItems: 'center',
@@ -94,7 +86,7 @@ const styles = StyleSheet.create({
       android: 'Poppins-Regular',
     }),
     textShadowColor: 'rgba(0,0,0,0.35)',
-    textShadowOffset: { width: 0, height: 1 },
+    textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 4,
   },
 

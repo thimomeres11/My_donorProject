@@ -1,12 +1,12 @@
-// src/pages/Login/index.tsx
+// src/Pages/Login/index.tsx
 import React, {useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
-  Alert,
   TextInput as RNTextInput,
 } from 'react-native';
+import {showMessage} from 'react-native-flash-message'; // <-- import showMessage
 import AutoHeader from '../../components/organisim/AutoHeader';
 import LogoTitle from '../../components/molecules/LogoTitles';
 import {Gap, Button, CreateAccount} from '../../components/atoms';
@@ -46,20 +46,29 @@ const Login: React.FC<any> = ({navigation, route}) => {
   const handleLogin = async () => {
     console.log('handleLogin', {email});
     if (!auth) {
-      Alert.alert(
-        'Firebase not initialized',
-        'auth is undefined — cek src/config/Firebase/index.tsx',
-      );
+      showMessage({
+        message: 'Firebase not initialized',
+        description: 'auth is undefined — cek src/config/Firebase/index.tsx',
+        type: 'danger',
+      });
       return;
     }
 
     const trimmed = email.trim();
     if (!trimmed || !password.trim()) {
-      Alert.alert('Error', 'Email dan Password harus diisi.');
+      showMessage({
+        message: 'Error',
+        description: 'Email dan Password harus diisi.',
+        type: 'warning',
+      });
       return;
     }
     if (!validateEmail(trimmed)) {
-      Alert.alert('Error', 'Masukkan email yang valid.');
+      showMessage({
+        message: 'Error',
+        description: 'Masukkan email yang valid.',
+        type: 'warning',
+      });
       return;
     }
 
@@ -72,6 +81,13 @@ const Login: React.FC<any> = ({navigation, route}) => {
       );
       const user = userCredential.user;
       console.log('Login success', user.uid);
+
+      showMessage({
+        message: 'Login berhasil',
+        description: 'Selamat datang!',
+        type: 'success',
+      });
+
       // navigasi ke Home, kirim uid
       navigation.replace('Home', {uid: user.uid});
     } catch (err: any) {
@@ -81,7 +97,12 @@ const Login: React.FC<any> = ({navigation, route}) => {
       else if (err?.code === 'auth/wrong-password') message = 'Password salah';
       else if (err?.code === 'auth/invalid-email')
         message = 'Email tidak valid';
-      Alert.alert('Login Failed', message);
+
+      showMessage({
+        message: 'Login Failed',
+        description: message,
+        type: 'danger',
+      });
     } finally {
       setLoading(false);
     }
