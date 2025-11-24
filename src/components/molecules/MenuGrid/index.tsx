@@ -14,7 +14,7 @@ const MenuGrid: React.FC<Props> = ({onPressCekStok}) => {
         style={styles.card}
         activeOpacity={0.8}
         onPress={onPressCekStok}>
-        <Text style={styles.cardText}>Cek stok Darah</Text>
+        <Text style={styles.cardText}>Request dan chek</Text>
       </TouchableOpacity>
 
       {/* Item lain tetap seperti semula */}
@@ -23,7 +23,7 @@ const MenuGrid: React.FC<Props> = ({onPressCekStok}) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.card} activeOpacity={0.8}>
-        <Text style={styles.cardText}>Request</Text>
+        <Text style={styles.cardText}>DaftarPendonor</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.card} activeOpacity={0.8}>

@@ -11,10 +11,11 @@ import {
   FlatList,
   Image,
   Platform,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import BottomNav from '../../components/organisim/BottomNav';
-import {Gap} from '../../components/atoms';
+import Gap from '../../components/atoms/Gap';
 
 const bloodTypes = ['A +', 'A -', 'B +', 'B -', 'AB +', 'AB -', 'O +', 'O -'];
 const locations = [
@@ -35,6 +36,10 @@ const CekStokDarah0: React.FC<any> = ({navigation}) => {
 
   const onPressSearch = () => {
     if (!isValid) {
+      Alert.alert(
+        'Form belum lengkap',
+        'Pilih golongan darah dan masukkan jumlah yang valid.',
+      );
       return;
     }
 
@@ -43,8 +48,6 @@ const CekStokDarah0: React.FC<any> = ({navigation}) => {
       quantity: Number(quantity),
       location,
     };
-
-    console.log('CekStokDarah0 - Search payload:', payload);
 
     // Navigasi ke screen CekStokDarah (hasil)
     navigation.navigate('CekStokDarah', payload);
@@ -67,7 +70,7 @@ const CekStokDarah0: React.FC<any> = ({navigation}) => {
           <View style={styles.logoRow}>
             <Image
               source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/mydonorproject.appspot.com/o/Chek%20stok%20darah.png?alt=media&token=8a1d1b1e-1b1e-1b1e-1b1e-1b1e1b1e1b1e',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/mydonorproject.appspot.com/o/Chek%20stok%20darah.png?alt=media',
               }}
               style={styles.topLogo}
               resizeMode="contain"
@@ -127,22 +130,15 @@ const CekStokDarah0: React.FC<any> = ({navigation}) => {
             onPress={onPressSearch}
             disabled={!isValid}
             accessibilityLabel="Cek stok darah">
-            <Text style={styles.searchBtnText}>Chek stok darah</Text>
+            <Text style={styles.searchBtnText}>Cek stok darah</Text>
           </TouchableOpacity>
 
-          {/* Help text + ilustrasi */}
+          {/* Help text */}
           <View style={styles.helpRow}>
             <Text style={styles.helpText}>
-              Pilih golongan darah dan lokasi, lalu tekan Search untuk melihat
-              jumlah kantong yang tersedia
+              Pilih golongan darah dan lokasi, lalu tekan Cek stok darah untuk
+              melihat daftar rumah sakit yang punya stok.
             </Text>
-            <Image
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/mydonorproject.appspot.com/o/Chek%20stok%20darah.png?alt=media&token=8a1d1b1e-1b1e-1b1e-1b1e-1b1e1b1e1b1e',
-              }}
-              style={styles.illustration}
-              resizeMode="contain"
-            />
           </View>
         </View>
 
@@ -279,11 +275,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E53935',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 6},
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 3,
   },
   searchBtnDisabled: {
     backgroundColor: '#ccc',
@@ -305,7 +296,6 @@ const styles = StyleSheet.create({
     color: '#444',
     fontSize: 12,
   },
-  illustration: {width: 110, height: 110, marginLeft: 8},
 
   modalOverlay: {
     flex: 1,
