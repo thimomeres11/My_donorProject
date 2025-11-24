@@ -83,7 +83,8 @@ const CekStokDarah0: React.FC<any> = ({navigation}) => {
             activeOpacity={0.8}
             onPress={() => setPickBloodVisible(true)}
             accessibilityLabel="Pilih golongan darah">
-            <Text style={[styles.selectText, !bloodType && styles.placeholderText]}>
+            <Text
+              style={[styles.selectText, !bloodType && styles.placeholderText]}>
               {bloodType || 'Pilih Golongan Darah'}
             </Text>
             <Ionicons name="chevron-down-outline" size={18} color="#666" />

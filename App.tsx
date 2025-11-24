@@ -13,9 +13,10 @@ import Welcome from './src/Pages/Welcome';
 import Welcome2 from './src/Pages/Welcome2';
 import WelcomeStartet from './src/Pages/WelcomeStartet';
 import CekStokDarah from './src/Pages/CekStokDarah';
+import CekStokDarah0 from './src/Pages/CekStokDarah0'; // ← TAMBAHKAN INI
 import './src/config/Firebase';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator(); // ← tanpa RootStackParamList
 
 const App: React.FC = () => {
   return (
@@ -52,9 +53,16 @@ const App: React.FC = () => {
             component={WelcomeStartet}
             options={{headerShown: false}}
           />
+
+          {/* === SCREEN CEK STOK DARAH === */}
           <Stack.Screen
             name="CekStokDarah"
             component={CekStokDarah}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CekStokDarah0"
+            component={CekStokDarah0}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
